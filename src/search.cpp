@@ -392,9 +392,6 @@ template <Node node> Score Search::absearch(int depth, Score alpha, Score beta, 
      *******************/
     if (depth < 3 && staticEval + 129 < alpha)
         return qsearch<NonPV>(alpha, beta, ss);
-    else if (PvNode && ttHit && !improving && alpha > ttScore) {
-        depth++;
-    }
 
     /********************
      * Reverse futility pruning
@@ -428,6 +425,9 @@ template <Node node> Score Search::absearch(int depth, Score alpha, Score beta, 
 
             return score;
         }
+    }
+    else if (PvNode && ttHit && alpha > ttScore + 100) {
+        depth++;
     }
 
 moves:
